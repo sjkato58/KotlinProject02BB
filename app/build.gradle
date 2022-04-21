@@ -16,7 +16,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildFeatures {
@@ -69,7 +69,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinxcoroutines"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxcoroutines"
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1'
-    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1"
 
     //Dagger - Hilt
     implementation "com.google.dagger:hilt-android:$hiltandroid"
@@ -99,9 +99,8 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomver")
 
     implementation "androidx.test:core:1.4.0"
-    implementation "androidx.test:runner:1.4.0"
     testImplementation 'junit:junit:4.13.2'
-    testImplementation "androidx.arch.core:core-testing:2.1.0"
+    testImplementation 'androidx.test.ext:junit-ktx:1.1.3'
     androidTestImplementation 'androidx.arch.core:core-testing:2.1.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
