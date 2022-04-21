@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="err_download_jsonarray">There was a problem parsing the character download, </string>
+    <string name="err_download_unknown">An unknown error has occurred, </string>
+    <string name="err_please_try_again_later">please try again later</string>
+</resources>

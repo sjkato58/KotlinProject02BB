@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppCore" parent="android:TextAppearance.Material" >
+
+    </style>
+
+    <style name="AppCore.Headline" parent="android:TextAppearance.Material.Headline" >
+
+    </style>
+
+    <style name="AppCore.Headline.Tablayout" parent="android:TextAppearance.Material.Headline" >
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="AppCore.Title1" parent="android:TextAppearance.Material.Title" >
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="AppCore.Title2" parent="AppCore.Title1" >
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>

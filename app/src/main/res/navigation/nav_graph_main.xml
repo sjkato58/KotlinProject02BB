@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/characterSelectionFragment">
+
+    <fragment
+        android:id="@+id/characterSelectionFragment"
+        android:name="com.katofuji.kotlinproject02bb.ui.characterselection.CharacterSelectionFragment"
+        android:label="Character Selection Fragment"
+        tools:layout="@layout/fragment_character_selection" >
+
+        <action
+            android:id="@+id/action_characterSelectionFragment_to_characterDetailsFragment"
+            app:destination="@id/characterDetailsFragment"
+            app:enterAnim="@anim/in_from_right"
+            app:exitAnim="@anim/out_to_left"
+            app:popEnterAnim="@anim/in_from_left"
+            app:popExitAnim="@anim/out_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/characterDetailsFragment"
+        android:name="com.katofuji.kotlinproject02bb.ui.characterdetails.CharacterDetailsFragment"
+        android:label="Character Detail Fragment"
+        tools:layout="@layout/fragment_character_details">
+        <argument
+            android:name="characterid"
+            app:argType="integer" />
+    </fragment>
+
+
+</navigation>

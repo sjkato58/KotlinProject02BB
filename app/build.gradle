@@ -1,0 +1,120 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs'
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "com.katofuji.kotlinproject02bb"
+        minSdk 26
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    testOptions {
+        unitTests {
+            returnDefaultValues = true
+            includeAndroidResources = true
+        }
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
+}
+
+dependencies {
+
+    implementation "androidx.core:core-ktx:$corektx"
+
+    implementation "androidx.appcompat:appcompat:$appcompat"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
+    implementation("androidx.cardview:cardview:$cardview")
+
+    implementation "com.google.android.material:material:$material"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefreshlayout"
+
+    //SplashScreen API
+    implementation "androidx.core:core-splashscreen:$coresplashscreen"
+
+    //Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$xnavigation"
+    implementation "androidx.navigation:navigation-ui-ktx:$xnavigation"
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:$xnavigation"
+
+    //Kotlin Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinxcoroutines"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxcoroutines"
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1'
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2"
+
+    //Dagger - Hilt
+    implementation "com.google.dagger:hilt-android:$hiltandroid"
+    kapt "com.google.dagger:hilt-android-compiler:$hiltandroid"
+    testImplementation "com.google.dagger:hilt-android-testing:$hiltandroid"
+    kaptTest "com.google.dagger:hilt-android-compiler:$hiltandroid"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hiltandroid"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hiltandroid"
+
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hiltlifecycleviewmodel"
+    kapt "androidx.hilt:hilt-compiler:$hiltandroidcompiler"
+
+    // Activity KTX for viewModels()
+    implementation "androidx.activity:activity-ktx:$activityktx"
+
+    //Volley
+    implementation "com.android.volley:volley:$volleyver"
+
+    //Glide
+    implementation "com.github.bumptech.glide:glide:$glidever"
+    kapt  "com.github.bumptech.glide:compiler:$glidever"
+
+    //Room
+    implementation("androidx.room:room-runtime:$roomver")
+    annotationProcessor("androidx.room:room-compiler:$roomver")
+    kapt("androidx.room:room-compiler:$roomver")
+    implementation("androidx.room:room-ktx:$roomver")
+
+    implementation "androidx.test:core:1.4.0"
+    implementation "androidx.test:runner:1.4.0"
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+    androidTestImplementation 'androidx.arch.core:core-testing:2.1.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    //Mock
+    testImplementation "io.mockk:mockk:$mockkver"
+    androidTestImplementation "io.mockk:mockk-android:$mockkver"
+
+    // Junit
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.0"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.7.0"
+
+    //JSON Test
+    testImplementation "org.json:json:20220320"
+}

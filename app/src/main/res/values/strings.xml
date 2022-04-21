@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Personal Project 02</string>
+
+    <string name="d_character_details_title">Character Info</string>
+    <string name="d_character_details_name">Name:</string>
+    <string name="d_character_details_occupation">Occupation:</string>
+    <string name="d_character_details_status">Status:</string>
+    <string name="d_character_details_nickname">Nickname:</string>
+    <string name="d_character_details_season_appearance">Season Appearance:</string>
+</resources>
