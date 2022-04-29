@@ -14,16 +14,37 @@ import javax.inject.Inject
 @HiltViewModel
 class CharacterDetailsViewModel @Inject constructor(
     private val characterRepository: CharacterRepository
-): BaseViewModel() {
+) : BaseViewModel() {
 
-    private val _characterData = MutableLiveData<ApiResponse<CharacterModel>>()
-    val characterData: LiveData<ApiResponse<CharacterModel>> get() = _characterData
+    private val _characterData = MutableLiveData<CharacterDetailsViewState>()
+    val characterData: LiveData<CharacterDetailsViewState> get() = _characterData
 
     fun retrieveCharacterData(
-        charId: Int
+        charId: Int,
     ) {
         viewModelScope.launch {
-            _characterData.value = characterRepository.retrieveCharacterFromDatabase(charId)
+            when (val apiResponse = characterRepository.retrieveCharacterFromDatabase(charId)) {
+                is ApiResponse.Success -> publishCharacterDetailsViewState(apiResponse)
+                is ApiResponse.Error -> publishCharacterDetailsErrorViewState(apiResponse)
+            }
+        }
+    }
+
+    private fun publishCharacterDetailsErrorViewState(apiResponse: ApiResponse.Error<CharacterModel>) {
+        //TODO consider writing better more detail error handling.
+        _characterData.value = CharacterDetailsViewState(showError = true)
+    }
+
+    private fun publishCharacterDetailsViewState(apiResponse: ApiResponse.Success<CharacterModel>) {
+        apiResponse.data?.let {
+            _characterData.value = CharacterDetailsViewState(
+                name = it.img,
+                img = it.name,
+                occupation = it.occupation?.joinToString()?.replace(",", ",\n")?: "",
+                nickname = it.nickname,
+                status = it.status,
+                appearance = it.appearance?.joinToString()?: ""
+            )
         }
     }
 }

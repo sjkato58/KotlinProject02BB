@@ -2,6 +2,7 @@ package com.katofuji.kotlinproject02bb.ui.characterdetails
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -18,31 +19,24 @@ class CharacterDetailsFragment: BaseFragment<FragmentCharacterDetailsBinding, Ch
 
     override val viewModel: CharacterDetailsViewModel by viewModels()
 
-    val args: CharacterDetailsFragmentArgs by navArgs()
+    private val args: CharacterDetailsFragmentArgs by navArgs()
 
     override fun initViews() {
         binding.ivBackBtnCharacterDetails.setOnClickListener { findNavController().popBackStack() }
     }
 
     override fun initObservers() {
-        viewModel.characterData.observe(viewLifecycleOwner) { response ->
-            if (response is ApiResponse.Success && response.data != null) {
-                val data = response.data
-
-                binding.ivAvatarCharacterDetails.setCharacterAvatar(
-                    glideRequests,
-                    data.img
-                )
-
-                binding.tvNameCharacterDetails.text = data.name
-                data.occupation?.let {
-                    binding.tvOccupationCharacterDetails.text = it.joinToString().replace(",", ",\n")
-                }
-                binding.tvNicknameCharacterDetails.text = data.nickname
-                binding.tvStatusCharacterDetails.text = data.status
-                data.appearance?.let {
-                    binding.tvSeasonAppearanceCharacterDetails.text = it.joinToString()
-                }
+        viewModel.characterData.observe(viewLifecycleOwner) { uiState ->
+            if (uiState.showError) {
+                binding.svCharacterDetails.isVisible = false
+            } else {
+                binding.svCharacterDetails.isVisible = true
+                binding.ivAvatarCharacterDetails.setCharacterAvatar(glideRequests, uiState.img)
+                binding.tvNameCharacterDetails.text = uiState.name
+                binding.tvOccupationCharacterDetails.text = uiState.occupation
+                binding.tvNicknameCharacterDetails.text = uiState.nickname
+                binding.tvStatusCharacterDetails.text = uiState.status
+                binding.tvSeasonAppearanceCharacterDetails.text = uiState.appearance
             }
         }
     }
