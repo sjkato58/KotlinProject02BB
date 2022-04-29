@@ -11,9 +11,9 @@ import com.katofuji.kotlinproject02bb.utils.GlideRequests
 import com.katofuji.kotlinproject02bb.utils.setCharacterAvatar
 
 class CharacterSelectionAdapter constructor(
-    val glideRequests: GlideRequests,
-    val characterClicked: (CharacterModel) -> Unit
-): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val glideRequests: GlideRequests,
+    private val characterClicked: (CharacterModel) -> Unit
+) : RecyclerView.Adapter<CharacterSelectionAdapter.CharacterItemViewHolder>() {
 
     private var list = mutableListOf<CharacterModel>()
 
@@ -27,7 +27,7 @@ class CharacterSelectionAdapter constructor(
 
     override fun getItemCount(): Int = list.size
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterItemViewHolder {
         val binding = ItemCharacterSelectionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CharacterItemViewHolder(
             binding,
@@ -35,19 +35,17 @@ class CharacterSelectionAdapter constructor(
         )
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is CharacterItemViewHolder) {
-            holder.bindData(
-                list[position],
-                glideRequests
-            )
-        }
+    override fun onBindViewHolder(holder: CharacterItemViewHolder, position: Int) {
+        holder.bindData(
+            list[position],
+            glideRequests
+        )
     }
 
     class CharacterItemViewHolder constructor(
         private val binding: ItemCharacterSelectionBinding,
         private val characterClicked: (CharacterModel) -> Unit
-    ): RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bindData(
             data: CharacterModel,
@@ -60,7 +58,7 @@ class CharacterSelectionAdapter constructor(
                 data.img
             )
 
-            binding.cvCharacterSelectionItem.setOnClickListener { characterClicked.invoke(data) }
+            binding.cvCharacterSelectionItem.setOnClickListener { characterClicked(data) }
         }
     }
 }

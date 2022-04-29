@@ -24,10 +24,6 @@ class CharacterSelectionFragment: BaseFragment<FragmentCharacterSelectionBinding
 
     override val viewModel: CharacterSelectionViewModel by viewModels()
 
-    private val characterClicked: (CharacterModel) -> Unit = { characterModel ->
-        viewModel.navigateToCharacterDetails(characterModel)
-    }
-
     override fun initViews() {
         binding.srlCharacterSelection.setOnRefreshListener {
             viewModel.downloadCharacterList(Refresh)
@@ -41,7 +37,7 @@ class CharacterSelectionFragment: BaseFragment<FragmentCharacterSelectionBinding
         )
         binding.rvCharacterSelection.adapter = CharacterSelectionAdapter(
             glideRequests,
-            characterClicked
+            viewModel::navigateToCharacterDetails
         )
     }
 
