@@ -38,8 +38,8 @@ class CharacterDetailsViewModel @Inject constructor(
     private fun publishCharacterDetailsViewState(apiResponse: ApiResponse.Success<CharacterModel>) {
         apiResponse.data?.let {
             _characterData.value = CharacterDetailsViewState(
-                name = it.img,
-                img = it.name,
+                name = it.name,
+                img = it.img,
                 occupation = it.occupation?.joinToString()?.replace(",", ",\n")?: "",
                 nickname = it.nickname,
                 status = it.status,
