@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CharacterSelectionViewModel @Inject constructor(
     private val characterRepository: CharacterRepository
-): BaseViewModel() {
+) : BaseViewModel() {
 
     private val _characterList = MutableLiveData<ApiResponse<List<CharacterModel>>>()
     val characterList: LiveData<ApiResponse<List<CharacterModel>>> get() = _characterList
