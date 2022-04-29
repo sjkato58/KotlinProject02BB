@@ -79,8 +79,8 @@ class CharacterDetailsViewModelTest {
 
     @Test
     fun `when attempting to get character data then will receive the appropriate data from the repository`() {
-        val slot = slot<ApiResponse<CharacterModel>>()
-        val observer = mockk<Observer<ApiResponse<CharacterModel>>>()
+        val slot = slot<CharacterDetailsViewState>()
+        val observer = mockk<Observer<CharacterDetailsViewState>>()
         coEvery {
             characterRepository.retrieveCharacterFromDatabase(EXAMPLE_CHARID)
         } returns ApiResponse.Success(exampleCharacter)
@@ -100,17 +100,16 @@ class CharacterDetailsViewModelTest {
         coVerify(exactly = VALUE_ONCE) {
             characterRepository.retrieveCharacterFromDatabase(EXAMPLE_CHARID)
         }
-        assertTrue(slot.captured is ApiResponse.Success)
-        assertTrue((slot.captured as ApiResponse.Success).data != null)
-        assertTrue((slot.captured as ApiResponse.Success).data!!.name == EXAMPLE_NAME)
+        assertFalse(slot.captured.name.isEmpty())
+        assertTrue(slot.captured.name == EXAMPLE_NAME)
 
         viewModel.characterData.removeObserver(observer)
     }
 
     @Test
     fun `when attempting to get character data but an error occurs then an error will be supplied by the repository`() {
-        val slot = slot<ApiResponse<CharacterModel>>()
-        val observer = mockk<Observer<ApiResponse<CharacterModel>>>()
+        val slot = slot<CharacterDetailsViewState>()
+        val observer = mockk<Observer<CharacterDetailsViewState>>()
         coEvery {
             characterRepository.retrieveCharacterFromDatabase(EXAMPLE_CHARID)
         } returns ApiResponse.Error(EXAMPLE_ERROR_RESPONSE)
@@ -130,9 +129,9 @@ class CharacterDetailsViewModelTest {
         coVerify(exactly = VALUE_ONCE) {
             characterRepository.retrieveCharacterFromDatabase(EXAMPLE_CHARID)
         }
-        assertTrue(slot.captured is ApiResponse.Error)
-        assertFalse((slot.captured as ApiResponse.Error).message.isNullOrEmpty())
-        assertTrue((slot.captured as ApiResponse.Error).message == EXAMPLE_ERROR_RESPONSE)
+        assertTrue(slot.captured.showError)
+        assertFalse(slot.captured.errorMessage.isEmpty())
+        assertTrue(slot.captured.errorMessage == EXAMPLE_ERROR_RESPONSE)
 
         viewModel.characterData.removeObserver(observer)
     }

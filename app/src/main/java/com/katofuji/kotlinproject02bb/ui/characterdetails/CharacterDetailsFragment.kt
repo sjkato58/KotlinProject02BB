@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.katofuji.kotlinproject02bb.base.BaseFragment
 import com.katofuji.kotlinproject02bb.data.ApiResponse
 import com.katofuji.kotlinproject02bb.databinding.FragmentCharacterDetailsBinding
@@ -29,6 +30,7 @@ class CharacterDetailsFragment: BaseFragment<FragmentCharacterDetailsBinding, Ch
         viewModel.characterData.observe(viewLifecycleOwner) { uiState ->
             if (uiState.showError) {
                 binding.svCharacterDetails.isVisible = false
+                Snackbar.make(binding.root, uiState.errorMessage, Snackbar.LENGTH_SHORT).show()
             } else {
                 binding.svCharacterDetails.isVisible = true
                 binding.ivAvatarCharacterDetails.setCharacterAvatar(glideRequests, uiState.img)

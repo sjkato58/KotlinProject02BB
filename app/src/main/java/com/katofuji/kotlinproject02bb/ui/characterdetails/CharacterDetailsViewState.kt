@@ -8,4 +8,5 @@ data class CharacterDetailsViewState(
     val status: String = "",
     val appearance: String = "",
     val showError: Boolean = false,
+    val errorMessage: String = "",
 )
