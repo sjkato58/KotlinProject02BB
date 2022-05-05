@@ -70,6 +70,9 @@ class CharacterSelectionViewModelTest {
         coEvery {
             characterRepository.downloadCharacterList()
         } returns ApiResponse.Success(exampleCharacterList)
+        coEvery {
+            characterRepository.saveCharacterListToDatabase(exampleCharacterList)
+        } returns Unit
 
         runTest {
             viewModel.downloadCharacterList(CharacterListDownloadLoadStatus.Initial)
@@ -82,12 +85,15 @@ class CharacterSelectionViewModelTest {
 
     @Test
     fun `when attempting to download the character list then receives a complete character list`() {
-        val slot = slot<ApiResponse<List<CharacterModel>>>()
-        val responsesList = mutableListOf<ApiResponse<List<CharacterModel>>>()
-        val observer = mockk<Observer<ApiResponse<List<CharacterModel>>>>()
+        val slot = slot<List<CharacterSelectionViewState>>()
+        val responsesList = mutableListOf<List<CharacterSelectionViewState>>()
+        val observer = mockk<Observer<List<CharacterSelectionViewState>>>()
         coEvery {
             characterRepository.downloadCharacterList()
         } returns ApiResponse.Success(exampleCharacterList)
+        coEvery {
+            characterRepository.saveCharacterListToDatabase(exampleCharacterList)
+        } returns Unit
         coEvery {
             observer.onChanged(capture(slot))
         } answers {
@@ -105,19 +111,17 @@ class CharacterSelectionViewModelTest {
             characterRepository.downloadCharacterList()
         }
         assertTrue(responsesList.size > 0)
-        assertTrue(responsesList[0] is ApiResponse.Loading)
-        assertTrue(responsesList[1] is ApiResponse.Success)
-        assertTrue((responsesList[1] as ApiResponse.Success).data != null)
-        assertTrue((responsesList[1] as ApiResponse.Success).data!![0].name == EXAMPLE_NAME)
+        assertTrue(responsesList[0][0].isLoading)
+        assertTrue(responsesList[1][0].name == EXAMPLE_NAME)
 
         viewModel.characterList.removeObserver(observer)
     }
 
     @Test
     fun `when attempting to download the character list but an error occurs then the error should be sent back`() {
-        val slot = slot<ApiResponse<List<CharacterModel>>>()
-        val responsesList = mutableListOf<ApiResponse<List<CharacterModel>>>()
-        val observer = mockk<Observer<ApiResponse<List<CharacterModel>>>>()
+        val slot = slot<List<CharacterSelectionViewState>>()
+        val responsesList = mutableListOf<List<CharacterSelectionViewState>>()
+        val observer = mockk<Observer<List<CharacterSelectionViewState>>>()
         coEvery {
             characterRepository.downloadCharacterList()
         } returns ApiResponse.Error(EXAMPLE_ERROR_RESPONSE)
@@ -138,38 +142,45 @@ class CharacterSelectionViewModelTest {
             characterRepository.downloadCharacterList()
         }
         assertTrue(responsesList.size > 0)
-        assertTrue(responsesList[0] is ApiResponse.Loading)
-        assertTrue(responsesList[1] is ApiResponse.Error)
-        assertFalse((responsesList[1] as ApiResponse.Error).message.isNullOrEmpty())
-        assertTrue((responsesList[1] as ApiResponse.Error).message == EXAMPLE_ERROR_RESPONSE)
+        assertTrue(responsesList[0][0].isLoading)
+        assertTrue(responsesList[1][0].showError)
+        assertFalse(responsesList[1][0].errorMessage.isEmpty())
+        assertTrue(responsesList[1][0].errorMessage == EXAMPLE_ERROR_RESPONSE)
 
         viewModel.characterList.removeObserver(observer)
     }
 
     @Test
     fun `when attempting to save the character list to memory then confirm that the save method is being called once`() {
+        val slot = slot<List<CharacterSelectionViewState>>()
+        val responsesList = mutableListOf<List<CharacterSelectionViewState>>()
+        val observer = mockk<Observer<List<CharacterSelectionViewState>>>()
         coEvery {
             characterRepository.downloadCharacterList()
         } returns ApiResponse.Success(exampleCharacterList)
+        coEvery {
+            characterRepository.saveCharacterListToDatabase(exampleCharacterList)
+        } returns Unit
+        coEvery {
+            observer.onChanged(capture(slot))
+        } answers {
+            responsesList.add(slot.captured)
+        }
+        viewModel.characterList.observeForever(observer)
 
         runTest {
             viewModel.downloadCharacterList(CharacterListDownloadLoadStatus.Initial)
         }
 
+        print("This is the responsesList: $responsesList")
+
         coVerify(exactly = VALUE_ONCE) {
             characterRepository.downloadCharacterList()
         }
-
-        coEvery {
-            characterRepository.saveCharacterListToDatabase(exampleCharacterList)
-        } returns Unit
-
-        runTest {
-            viewModel.saveCharacterList()
-        }
-
         coVerify(exactly = VALUE_ONCE) {
             characterRepository.saveCharacterListToDatabase(exampleCharacterList)
         }
+
+        viewModel.characterList.removeObserver(observer)
     }
 }
