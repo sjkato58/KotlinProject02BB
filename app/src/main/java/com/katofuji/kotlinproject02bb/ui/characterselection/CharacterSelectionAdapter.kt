@@ -1,24 +1,21 @@
 package com.katofuji.kotlinproject02bb.ui.characterselection
 
-import android.net.Uri
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.katofuji.kotlinproject02bb.data.characterlist.datamodels.CharacterModel
 import com.katofuji.kotlinproject02bb.databinding.ItemCharacterSelectionBinding
 import com.katofuji.kotlinproject02bb.utils.GlideRequests
 import com.katofuji.kotlinproject02bb.utils.setCharacterAvatar
 
 class CharacterSelectionAdapter constructor(
     private val glideRequests: GlideRequests,
-    private val characterClicked: (CharacterModel) -> Unit
+    private val characterClicked: (CharacterSelectionViewState) -> Unit
 ) : RecyclerView.Adapter<CharacterSelectionAdapter.CharacterItemViewHolder>() {
 
-    private var list = mutableListOf<CharacterModel>()
+    private var list = mutableListOf<CharacterSelectionViewState>()
 
     fun updateListContents(
-        newList: List<CharacterModel>
+        newList: List<CharacterSelectionViewState>
     ) {
         list = mutableListOf()
         list.addAll(newList)
@@ -44,11 +41,11 @@ class CharacterSelectionAdapter constructor(
 
     class CharacterItemViewHolder constructor(
         private val binding: ItemCharacterSelectionBinding,
-        private val characterClicked: (CharacterModel) -> Unit
+        private val characterClicked: (CharacterSelectionViewState) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bindData(
-            data: CharacterModel,
+            data: CharacterSelectionViewState,
             glideRequests: GlideRequests
         ) {
             binding.tvCharacterSelectionItem.text = data.name

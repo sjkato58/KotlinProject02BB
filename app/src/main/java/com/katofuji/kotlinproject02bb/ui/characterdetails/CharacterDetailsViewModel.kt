@@ -31,7 +31,6 @@ class CharacterDetailsViewModel @Inject constructor(
     }
 
     private fun publishCharacterDetailsErrorViewState(apiResponse: ApiResponse.Error<CharacterModel>) {
-        //TODO consider writing better more detail error handling.
         _characterData.value = CharacterDetailsViewState(showError = true, errorMessage = apiResponse.message ?: "")
     }
 

@@ -42,19 +42,17 @@ class CharacterSelectionFragment: BaseFragment<FragmentCharacterSelectionBinding
     }
 
     override fun initObservers() {
-        viewModel.characterList.observe(viewLifecycleOwner) { response ->
+        viewModel.characterList.observe(viewLifecycleOwner) { responseList ->
             binding.srlCharacterSelection.isRefreshing = when {
-                (response is ApiResponse.Success && !response.data.isNullOrEmpty()) -> {
-                    (binding.rvCharacterSelection.adapter as CharacterSelectionAdapter).updateListContents(response.data)
-                    viewModel.saveCharacterList()
-                    false
+                (responseList[0].isLoading) -> {
+                    true
                 }
-                (response is ApiResponse.Error) -> {
+                (responseList[0].showError) -> {
                     Snackbar.make(
                         binding.foundationCharacterSelection,
                         when {
-                            !response.message.isNullOrEmpty() -> {
-                                response.message
+                            !responseList[0].errorMessage.isNullOrEmpty() -> {
+                                responseList[0].errorMessage
                             }
                             else -> resources.getString(R.string.err_download_unknown) + resources.getString(R.string.err_please_try_again_later)
                         },
@@ -63,7 +61,8 @@ class CharacterSelectionFragment: BaseFragment<FragmentCharacterSelectionBinding
                     false
                 }
                 else -> {
-                    true
+                    (binding.rvCharacterSelection.adapter as CharacterSelectionAdapter).updateListContents(responseList)
+                    false
                 }
             }
         }
