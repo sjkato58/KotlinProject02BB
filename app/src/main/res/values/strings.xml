@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Personal Project 02</string>
 
+    <string name="d_character_selection_seasonalfilter">Filter by Season:</string>
+
     <string name="d_character_details_title">Character Info</string>
     <string name="d_character_details_name">Name:</string>
     <string name="d_character_details_occupation">Occupation:</string>
