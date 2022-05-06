@@ -50,16 +50,14 @@ class CharacterSelectionViewModel @Inject constructor(
     }
 
     private fun publishCharacterSelectionViewState(responseList: List<CharacterModel>) {
-        val finalList = mutableListOf<CharacterSelectionViewState>()
-        responseList.forEach {
-            finalList.add(CharacterSelectionViewState(
+        _characterList.value = responseList.map {
+            CharacterSelectionViewState(
                 charid = it.charid,
                 name = it.name,
                 img = it.img,
                 appearance = it.appearance
-            ))
+            )
         }
-        _characterList.value = finalList
     }
 
     private fun publishCharacterSelectionErrorViewState(apiResponse: ApiResponse.Error<List<CharacterModel>>) {
